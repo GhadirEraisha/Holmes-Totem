@@ -4,7 +4,7 @@ import java.util.concurrent.{Executors, ExecutorService}
 
 import akka.actor.{ActorRef, ActorSystem, Props}
 import org.novetta.zoo.actors._
-import org.novetta.zoo.services.{YaraSuccess, MetadataSuccess, VTSampleSuccess, YaraWork, MetadataWork, VTSampleWork}
+import org.novetta.zoo.services.{YaraSuccess, MetadataSuccess,VTSampleSuccess, AssemblyAppSuccess, YaraWork, MetadataWork,VTSampleWork, AssemblyAppWork}
 import org.novetta.zoo.types._
 
 import org.json4s._
@@ -66,6 +66,7 @@ object driver extends App with Instrumented {
         case "PEINFO" => Random.shuffle(services.getOrElse("peinfo", List())).head
         case "VTSAMPLE" => Random.shuffle(services.getOrElse("vtsample", List())).head
         case "YARA" => Random.shuffle(services.getOrElse("yara", List())).head
+        case "ASSEMBLYAPP" => Random.shuffle(services.getOrElse("assemblyapp", List())).head
       }
     }
 
@@ -83,6 +84,9 @@ object driver extends App with Instrumented {
         case (s: String, li: List[String]) =>
           UnsupportedWork(key, filename, 1, s, GeneratePartial(s), li)
 
+        case ("VTSample", li: List[String]) =>
+          AssemblyAppWork(key, filename, 60, "AssemblyApp", GeneratePartial("AssemblyApp"), li)
+
         case _ => Unit
       }).collect({
         case x: TaskedWork => x
@@ -95,6 +99,7 @@ object driver extends App with Instrumented {
         case x: MetadataSuccess => "metadata.result.static.zoo"
         case x: YaraSuccess => "yara.result.static.zoo"
         case x: VTSampleSuccess => "vtsample.result.static.zoo"
+        case x: AssemblyAppSuccess => "assemblyapp.result.static.zoo"
       }
     }
   }
