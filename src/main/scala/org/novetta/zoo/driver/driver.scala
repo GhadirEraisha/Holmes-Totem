@@ -81,11 +81,11 @@ object driver extends App with Instrumented {
         case ("VTSample", li: List[String]) =>
           VTSampleWork(key, filename, 60, "VTSample", GeneratePartial("VTSample"), li)
 
-        case (s: String, li: List[String]) =>
-          UnsupportedWork(key, filename, 1, s, GeneratePartial(s), li)
-
         case ("ASSEMBLYAPP", li: List[String]) =>
           AssemblyAppWork(key, filename, 60, "AssemblyApp", GeneratePartial("AssemblyApp"), li)
+
+        case (s: String, li: List[String]) =>
+          UnsupportedWork(key, filename, 1, s, GeneratePartial(s), li)
 
         case _ => Unit
       }).collect({
