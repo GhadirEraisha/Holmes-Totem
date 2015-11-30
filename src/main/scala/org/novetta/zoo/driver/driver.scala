@@ -84,7 +84,7 @@ object driver extends App with Instrumented {
         case (s: String, li: List[String]) =>
           UnsupportedWork(key, filename, 1, s, GeneratePartial(s), li)
 
-        case ("VTSample", li: List[String]) =>
+        case ("ASSEMBLYAPP", li: List[String]) =>
           AssemblyAppWork(key, filename, 60, "AssemblyApp", GeneratePartial("AssemblyApp"), li)
 
         case _ => Unit
